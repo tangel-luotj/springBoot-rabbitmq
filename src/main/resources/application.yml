@@ -1,0 +1,13 @@
+# 端口服务
+server:
+  port: 9888
+  address: localhost
+
+spring:
+  datasource:
+    password: 123456
+    url: jdbc:mysql://localhost:3306/xxx
+    username: root
+    dbname: xxx
+    parameters: ?useSSL=false&useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.jdbc.Driver
