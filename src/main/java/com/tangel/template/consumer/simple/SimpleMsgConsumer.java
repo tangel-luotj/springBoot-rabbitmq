@@ -10,14 +10,15 @@ import java.io.IOException;
 
 /**
  * 简单队列 之 消费者
- *     desc: 消费者通过定义的队列名称，消费对应未被消费的消息
+ *  desc: 消费者通过定义的队列名称，消费对应未被消费的消息
+ *
  * @author create by luotj
  * @Date: 2020/6/17 6:24 下午
  **/
 @Slf4j
 public class SimpleMsgConsumer {
 
-    private static final String QUEUE_NAME = "testQueue1";
+    private static final String QUEUE_NAME = "simpleQueue1";
 
     public static void main(String[] args) throws IOException, InterruptedException {
         //获取连接
@@ -30,10 +31,12 @@ public class SimpleMsgConsumer {
         QueueingConsumer consumer = new QueueingConsumer(channel);
         channel.basicConsume(QUEUE_NAME, true, consumer);
 
-        //获取生产者发布的消息
-        QueueingConsumer.Delivery delivery = consumer.nextDelivery();
-        String msg = new String(delivery.getBody());
-        log.info("消费者获取信息:{}", msg);
+        while (true) {
+            //获取生产者发布的消息
+            QueueingConsumer.Delivery delivery = consumer.nextDelivery();
+            String msg = new String(delivery.getBody());
+            log.info("简单队列消费者获取信息:{}", msg);
+        }
     }
 
 }
