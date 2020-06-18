@@ -9,14 +9,15 @@ import java.io.IOException;
 
 /**
  * 简单队列 之 生产者
- *      desc: 生产者通过定义的队列名称，发布消息给消费者进行消费
+ *  desc: 生产者通过定义的队列名称，发布消息给消费者进行消费
+ *
  * @author create by luotj
  * @Date: 2020/6/8 7:04 下午
  **/
 @Slf4j
 public class SimpleMsgProvider {
     /* 定义队列名称 */
-    private static final String QUEUE_NAME = "testQueue1";
+    private static final String QUEUE_NAME = "simpleQueue1";
 
     public static void main(String[] args) throws IOException {
         //获取连接
@@ -27,7 +28,7 @@ public class SimpleMsgProvider {
         String message = "hello , this is my first msg!!";
         //发布消息
         channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
-        log.info("success send : {}", message);
+        log.info("简单队列success send : {}", message);
         //关闭连接
         channel.close();
         connection.close();
