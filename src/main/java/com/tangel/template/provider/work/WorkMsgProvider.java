@@ -1,4 +1,4 @@
-package com.tangel.template.provider.simple;
+package com.tangel.template.provider.work;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -14,7 +14,7 @@ import java.io.IOException;
  * @Date: 2020/6/18 12:27 下午
  **/
 @Slf4j
-public class WorkMsgProvider1 {
+public class WorkMsgProvider {
 
     private static final String QUEUE_NAME = "workQueue1";
 

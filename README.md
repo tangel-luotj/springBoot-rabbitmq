@@ -36,13 +36,26 @@ springBoot整合rabbitmq
 
 ### 2、Work模式-工作队列
 * 描述:多个消费者的情况下，生产者发送一条消息会被其中一个空闲的消费者获取被消费(倘若所有的消费者都空闲的情况下，需要考虑消息的轮询/公平分发)
-* cousumer包下放置了两个消费类(WorkMsgConsumer1&&WorkMsgConsumer2),provider包下放置有一个生产类(WorkMsgProvider1)
+* cousumer/work包下放置了两个消费类(WorkMsgConsumer1&&WorkMsgConsumer2),provider/work包下放置有一个生产类(WorkMsgProvider)
 * 隐患:高并发情况下,默认会产生某一个消息被多个消费者共同使用
 * 优点:不需要知道分配强度的情况下，一堆生成消息的消息将给到消费者进行争抢
 
 ```
     测试用例(消费者类启动、生产者类未启动的条件下实施)
         * 启动消费者(WorkMsgConsumer1&&WorkMsgConsumer2),确保启动并创建队列成功，可查看rmq管控台Queues下是否产生"workQueue1"队列
-        * 队列生成，启动生产者(WorkMsgProvider1),启动成功，分别查看两个消费者类控制台
+        * 队列生成，启动生产者(WorkMsgProvider),启动成功，分别查看两个消费者类控制台
         * 可以查看到，消费者休眠时间少的消费者启动类，消费的消息占了半壁江山,可以印证，空闲的消费者将会抢夺更多的消息
+```
+
+### 3、发布订阅模式
+* 描述:发布订阅见名思义，消费者通过订阅生产者发布的消息进而接收到对应发布的消息，这里引入了一个交换机的概念，生产者发布消息到达交换机，交换机发送消息给绑定的队列中，消费者通过订阅的队列获取到对应的消息
+* cousumer/fanout包下放置了两个消费类(FanoutMsgConsumer1&&FanoutMsgConsumer2),provider/fanout包下放置有一个生产类(FanoutMsgProvider)
+* 优点:方便对消息进行群发，可以有效减小对单个队列的压力
+
+```
+    测试用例
+        * 先启动生产者(WorkMsgProvider)，查看rmq已经生成交换机(fanout_exchange)，若没有生成交换机再启动消费者会报错
+        * 交换机创建成功，启动消费者(FanoutMsgConsumer1&&FanoutMsgConsumer2),确保启动并创建队列成功，可查看rmq管控台Queues下是否产生"fanout_queue1 和 fanout_queue2"队列
+        * 队列生成，再次启动生产者(WorkMsgProvider),启动成功，分别查看两个消费者类控制台
+        * 可以查看到分别输出消费的消息
 ```
