@@ -1,9 +1,9 @@
-package com.tangel.template.consumer.simple;
+package com.tangel.rabbitmq.consumer.simple;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.QueueingConsumer;
-import com.tangel.template.utils.ConnectionUtil;
+import com.tangel.rabbitmq.utils.ConnectionUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;

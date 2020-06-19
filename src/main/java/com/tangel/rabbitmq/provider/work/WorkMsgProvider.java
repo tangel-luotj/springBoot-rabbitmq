@@ -1,4 +1,4 @@
-package com.tangel.template.provider.work;
+package com.tangel.rabbitmq.provider.work;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
