@@ -15,7 +15,7 @@ springBoot整合rabbitmq
 * 管控台访问地址:http://localhost:15672  账号:guest 密码:guest
 * 测试项目获取连接是否成功
 
-### 1、简单队列
+### 1、简单队列(Simple Model)
 * 描述:消费者通过声明的队列获取生产者通过该队列发送的消息，若消费者一直处于启动状态，生产者发送的消息会直接被消费，若消费者未启动，生成者发送的消息将等待消费者的启动而被消费
 * consumer和provider路径下的simple目录下放置的分别是对应的消费者类和生产者类
 * SimpleMsgProvider为消息生产者
@@ -34,7 +34,7 @@ springBoot整合rabbitmq
         * 启动消费者(SimpleMsgConsumer)，查看消费者类控制台，本实例输出消费消息"hello , this is my first msg!!"
 ```
 
-### 2、Work模式-工作队列
+### 2、Work模式-工作队列(Work Model)
 * 描述:多个消费者的情况下，生产者发送一条消息会被其中一个空闲的消费者获取被消费(倘若所有的消费者都空闲的情况下，需要考虑消息的轮询/公平分发)
 * cousumer/work包下放置了两个消费类(WorkMsgConsumer1&&WorkMsgConsumer2),provider/work包下放置有一个生产类(WorkMsgProvider)
 * 隐患:高并发情况下,默认会产生某一个消息被多个消费者共同使用
@@ -47,7 +47,7 @@ springBoot整合rabbitmq
         * 可以查看到，消费者休眠时间少的消费者启动类，消费的消息占了半壁江山,可以印证，空闲的消费者将会抢夺更多的消息
 ```
 
-### 3、发布订阅模式
+### 3、发布订阅模式 (Publish/SubScribe Model)
 * 描述:发布订阅见名思义，消费者通过订阅生产者发布的消息进而接收到对应发布的消息，这里引入了一个交换机的概念，生产者发布消息到达交换机，交换机发送消息给绑定的队列中，消费者通过订阅的队列获取到对应的消息
 * cousumer/fanout包下放置了两个消费类(FanoutMsgConsumer1&&FanoutMsgConsumer2),provider/fanout包下放置有一个生产类(FanoutMsgProvider)
 * 优点:方便对消息进行群发，可以有效减小对单个队列的压力
@@ -58,4 +58,17 @@ springBoot整合rabbitmq
         * 交换机创建成功，启动消费者(FanoutMsgConsumer1&&FanoutMsgConsumer2),确保启动并创建队列成功，可查看rmq管控台Queues下是否产生"fanout_queue1 和 fanout_queue2"队列
         * 队列生成，再次启动生产者(WorkMsgProvider),启动成功，分别查看两个消费者类控制台
         * 可以查看到分别输出消费的消息
+```
+
+### 4、路由模式(Routing Model)
+* 描述:生产者向绑定着特定路由key的交换机发送消息，消费者通过交换机和队列的绑定并设定特定的路由key完成一一对应的消息投递，交换机和队列之间可以建立多个路由规则
+* cousumer/direct包下放置了两个消费类(DirectMsgConsumer1&&DirectMsgConsumer2),provider/direct包下放置有一个生产类(DirectMsgProvider)
+* 优点:根据路由key精准的一对一的发送消息，可以对不同的消息进行分类消费
+
+```
+    测试用例
+        * 先启动生产者(DirectMsgProvider)，查看rmq已经生成交换机(direct_exchange)，若没有生成交换机再启动消费者会报错
+        * 交换机创建成功，启动消费者(DirectMsgConsumer1&&DirectMsgConsumer2),确保启动并创建队列成功，可查看rmq管控台Queues下是否产生"direct_queue1 和 direct_queue2"队列,可以查看到所绑定的路由key
+        * 队列生成，再次启动生产者(DirectMsgProvider),启动成功，分别查看两个消费者类控制台
+        * 查看对应消费者所绑定的路由key中的不同路由key之间消费的消息不同
 ```
