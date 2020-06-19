@@ -1,4 +1,4 @@
-package com.tangel.template.config;
+package com.tangel.rabbitmq.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package com.tangel.template.utils;
+package com.tangel.rabbitmq.utils;
 
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;

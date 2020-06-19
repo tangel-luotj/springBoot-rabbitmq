@@ -1,8 +1,8 @@
-package com.tangel.template.provider.simple;
+package com.tangel.rabbitmq.provider.simple;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
-import com.tangel.template.utils.ConnectionUtil;
+import com.tangel.rabbitmq.utils.ConnectionUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
