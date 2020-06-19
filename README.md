@@ -72,3 +72,16 @@ springBoot整合rabbitmq
         * 队列生成，再次启动生产者(DirectMsgProvider),启动成功，分别查看两个消费者类控制台
         * 查看对应消费者所绑定的路由key中的不同路由key之间消费的消息不同
 ```
+
+### 5、主题(通配符)模式(Topic Model)
+* 描述:该模式和路由模式是一样的，只是当前模式的路由key可以使用通配符，(`*`匹配一个词，`#`匹配一个或多个词)
+* cousumer/topic包下放置了两个消费类(TopicMsgConsumer1&&TopicMsgConsumer2),provider/topic包下放置有一个生产类(TopicMsgProvider)
+* 优点:在路由的基础上进行了拓展，将一个一的情况下，亦可一对多
+
+```
+    测试用例
+        * 先启动生产者(TopicMsgProvider)，查看rmq已经生成交换机(topic_exchange)，若没有生成交换机再启动消费者会报错
+        * 交换机创建成功，启动消费者(TopicMsgConsumer1&&TopicMsgConsumer2),确保启动并创建队列成功，可查看rmq管控台Queues下是否产生"topic_queue1 和 topic_queue2"队列,可以查看到所绑定的路由key
+        * 队列生成，再次启动生产者(TopicMsgProvider),启动成功，分别查看两个消费者类控制台
+        * 查看对应消费者所绑定的路由key中的不同路由key之间消费的消息不同
+```

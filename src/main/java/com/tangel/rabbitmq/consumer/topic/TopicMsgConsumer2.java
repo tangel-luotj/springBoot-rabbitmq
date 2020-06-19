@@ -1,49 +1,50 @@
-package com.tangel.template.consumer.direct;
+package com.tangel.rabbitmq.consumer.topic;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.QueueingConsumer;
-import com.tangel.template.utils.ConnectionUtil;
+import com.tangel.rabbitmq.utils.ConnectionUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 
 /**
- * 路由模式 - 消费者
+ * 主题(通配符)模式 - 消费者2
  *
  * @author create by luotj
- * @Date: 2020/6/19 2:12 下午
+ * @Date: 2020/6/19 3:59 下午
  **/
 @Slf4j
-public class DirectMsgConsumer1 {
+public class TopicMsgConsumer2 {
 
-    private static final String EXCHANGE_NAME = "direct_exchange";
-
-    private static final String QUEUE_NAME = "direct_queue1";
+    /* 交换机名称 */
+    private static final String EXCHANGE_NAME = "topic_exchange";
+    /* 队列名称 */
+    private static final String QUEUE_NAME = "topic_queue2";
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        //获取连接和创建信道
+        //获取连接,创建通道
         Connection connection = ConnectionUtil.getConnection();
         Channel channel = connection.createChannel();
 
-        //定义队列
+        //根据通道创建队列，并对交换机和队列进行绑定
         channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+        channel.queueBind(QUEUE_NAME, EXCHANGE_NAME, "topic.#");
+        channel.queueBind(QUEUE_NAME, EXCHANGE_NAME, "topic.luotj.*");
 
-        //一个队列可以绑定多个路由key
-        channel.queueBind(QUEUE_NAME, EXCHANGE_NAME, "error");
-        channel.queueBind(QUEUE_NAME, EXCHANGE_NAME, "success");
-        channel.queueBind(QUEUE_NAME, EXCHANGE_NAME, "fail");
-        //监控消费者
-        QueueingConsumer consumer = new QueueingConsumer(channel);
-        //设置最大吞吐量
         channel.basicQos(1);
+
+        //监控消息
+        QueueingConsumer consumer = new QueueingConsumer(channel);
         channel.basicConsume(QUEUE_NAME, false, consumer);
 
         while (true) {
             //获取传送的消息
             QueueingConsumer.Delivery delivery = consumer.nextDelivery();
             String body = new String(delivery.getBody());
-            log.info("消费信息:{}", body);
+            log.info("消息内容:{}", body);
+            //线程睡眠1秒
+            Thread.sleep(10);
             //消息确认
             channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
         }
