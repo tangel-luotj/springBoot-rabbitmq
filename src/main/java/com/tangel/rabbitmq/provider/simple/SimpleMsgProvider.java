@@ -1,15 +1,20 @@
 package com.tangel.rabbitmq.provider.simple;
 
+import com.google.common.collect.Maps;
+import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.ConfirmListener;
 import com.rabbitmq.client.Connection;
 import com.tangel.rabbitmq.utils.ConnectionUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.jms.JmsProperties;
 
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * 简单队列 之 生产者
- *  desc: 生产者通过定义的队列名称，发布消息给消费者进行消费
+ * desc: 生产者通过定义的队列名称，发布消息给消费者进行消费
  *
  * @author create by luotj
  * @Date: 2020/6/8 7:04 下午
@@ -24,14 +29,28 @@ public class SimpleMsgProvider {
         Connection connection = ConnectionUtil.getConnection();
         //创建信道
         Channel channel = connection.createChannel();
+
+        channel.confirmSelect();
+
+        Map<String, Object> paramMap = Maps.newHashMap();
+        paramMap.put("hello", "rabbitmq");
+        paramMap.put("type", "simple");
+        SimpleResponse response = new SimpleResponse();
+        response.setUserId(1L);
+        response.setUserName("Tangel");
+        paramMap.put("response", response.toString());
+
+        AMQP.BasicProperties properties = new AMQP.BasicProperties().builder()
+                .headers(paramMap)              //请求头参数
+                .contentEncoding("utf-8")
+                .expiration("10000")
+                .deliveryMode(2)                //1:非持久性，2:持久性
+                .build();
+
         //定义发布的信息
         String message = "hello , this is my first msg!!";
         //发布消息
-        channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
-        log.info("简单队列success send : {}", message);
-        //关闭连接
-        channel.close();
-        connection.close();
+        channel.basicPublish("", QUEUE_NAME, properties, message.getBytes());
     }
 
 }

@@ -25,13 +25,13 @@ springBoot整合rabbitmq
 ```
     测试用例1(消费者类、生产者类未启动的条件下实施)
         * 启动消费者(SimpleMsgConsumer),确保启动并创建队列成功，可查看rmq管控台Queues下是否产生"testQueue"队列
-        * 队列生成，启动生产者(SimpleMsgProvider),启动成功，查看消费者类控制台，本实例输出消费消息"hello , this is my first msg!!"
+        * 队列生成，启动生产者(SimpleMsgProvider),启动成功，查看消费者类控制台，本实例输出消费消息"hello , this is my first msg!!",并打印请求头信息
 
     测试用例2(消费者类、生产者类未启动的条件下实施)
         * 查看rmq管控台Queues下是否产生"testQueue"队列
         * 队列生成，启动生产者(SimpleMsgProvider),启动成功
         * 查看rmq管控台Queues下的"testQueue"队列，可查看到产生了一条未被消费的消息
-        * 启动消费者(SimpleMsgConsumer)，查看消费者类控制台，本实例输出消费消息"hello , this is my first msg!!"
+        * 启动消费者(SimpleMsgConsumer)，查看消费者类控制台，本实例输出消费消息"hello , this is my first msg!!",并打印请求头信息
 ```
 
 ### 2、Work模式-工作队列(Work Model)
