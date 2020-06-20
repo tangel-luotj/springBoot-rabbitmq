@@ -22,7 +22,7 @@ public class TopicMsgConsumer2 {
     /* 队列名称 */
     private static final String QUEUE_NAME = "topic_queue2";
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException {
         //获取连接,创建通道
         Connection connection = ConnectionUtil.getConnection();
         Channel channel = connection.createChannel();
@@ -35,18 +35,6 @@ public class TopicMsgConsumer2 {
         channel.basicQos(1);
 
         //监控消息
-        QueueingConsumer consumer = new QueueingConsumer(channel);
-        channel.basicConsume(QUEUE_NAME, false, consumer);
-
-        while (true) {
-            //获取传送的消息
-            QueueingConsumer.Delivery delivery = consumer.nextDelivery();
-            String body = new String(delivery.getBody());
-            log.info("消息内容:{}", body);
-            //线程睡眠1秒
-            Thread.sleep(10);
-            //消息确认
-            channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
-        }
+        channel.basicConsume(QUEUE_NAME, false, new MyConsumer(channel));
     }
 }
