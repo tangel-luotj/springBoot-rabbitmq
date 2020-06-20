@@ -1,16 +1,20 @@
 package com.tangel.rabbitmq.consumer.simple;
 
+import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.ConfirmListener;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.QueueingConsumer;
+import com.tangel.rabbitmq.provider.simple.SimpleResponse;
 import com.tangel.rabbitmq.utils.ConnectionUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * 简单队列 之 消费者
- *  desc: 消费者通过定义的队列名称，消费对应未被消费的消息
+ * desc: 消费者通过定义的队列名称，消费对应未被消费的消息
  *
  * @author create by luotj
  * @Date: 2020/6/17 6:24 下午
@@ -36,6 +40,9 @@ public class SimpleMsgConsumer {
             QueueingConsumer.Delivery delivery = consumer.nextDelivery();
             String msg = new String(delivery.getBody());
             log.info("简单队列消费者获取信息:{}", msg);
+            AMQP.BasicProperties properties = delivery.getProperties();
+            Map<String, Object> paramMap = properties.getHeaders();
+            log.info("请求头携带的信息:{}", paramMap.get("response"));           //若参数不存在，返回null值
         }
     }
 
