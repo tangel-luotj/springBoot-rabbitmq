@@ -7,6 +7,7 @@ import com.tangel.rabbitmq.utils.ConnectionUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 
 /**
  * 路由模式 - 消费者
@@ -22,7 +23,7 @@ public class DirectMsgConsumer2 {
     private static final String EXCHANGE_NAME = "direct_exchange";
     private static final String QUEUE_NAME = "direct_queue2";
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException, InterruptedException, TimeoutException {
         //获取连接和创建信道
         Connection connection = ConnectionUtil.getConnection();
         Channel channel = connection.createChannel();

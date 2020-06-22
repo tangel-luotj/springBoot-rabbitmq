@@ -7,6 +7,7 @@ import com.tangel.rabbitmq.utils.ConnectionUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 
 /**
  * 主题(通配符)模式 - 消费者1
@@ -22,7 +23,7 @@ public class TopicMsgConsumer1 {
     /* 队列名称 */
     private static final String QUEUE_NAME = "topic_queue1";
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException, InterruptedException, TimeoutException {
         //获取连接,创建通道
         Connection connection = ConnectionUtil.getConnection();
         Channel channel = connection.createChannel();

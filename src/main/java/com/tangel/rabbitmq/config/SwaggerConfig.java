@@ -30,7 +30,7 @@ public class SwaggerConfig {
                                 .build()
                 )
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.tangel.template"))
+                .apis(RequestHandlerSelectors.basePackage("com.tangel.rabbitmq"))
                 .paths(PathSelectors.any())
                 .build();
     }

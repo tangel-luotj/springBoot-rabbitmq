@@ -6,6 +6,7 @@ import com.rabbitmq.client.ConnectionFactory;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 
 /**
  * 路由模式 - 生产者
@@ -19,7 +20,7 @@ public class DirectMsgProvider {
     /* 交换机名称 */
     private static final String EXCHANGE_NAME = "direct_exchange";
 
-    private static Connection queryConnection() throws IOException {
+    private static Connection queryConnection() throws IOException, TimeoutException {
         //配置连接
         ConnectionFactory factory = new ConnectionFactory();
         factory.setUsername("guest");
@@ -30,7 +31,7 @@ public class DirectMsgProvider {
         return factory.newConnection();
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, TimeoutException {
         //获取连接
         Connection connection = queryConnection();
         //创建信道

@@ -1,5 +1,6 @@
 package com.tangel.rabbitmq.consumer.work;
 
+import com.google.common.collect.Lists;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -7,6 +8,8 @@ import com.rabbitmq.client.QueueingConsumer;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.concurrent.TimeoutException;
 
 /**
  * work模式 - 2号消费者
@@ -20,7 +23,7 @@ public class WorkMsgConsumer2 {
     /* 队列名称 */
     private static final String QUEUE_NAME = "workQueue1";
 
-    private static Connection queryConnection() throws IOException {
+    private static Connection queryConnection() throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setUsername("guest");
         factory.setPassword("guest");
@@ -30,7 +33,7 @@ public class WorkMsgConsumer2 {
         return factory.newConnection();
     }
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException, InterruptedException, TimeoutException {
         //获取连接
         Connection connection = queryConnection();
         Channel channel = connection.createChannel();

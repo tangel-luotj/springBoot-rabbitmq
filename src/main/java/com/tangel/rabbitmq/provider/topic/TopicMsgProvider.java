@@ -6,6 +6,7 @@ import com.tangel.rabbitmq.utils.ConnectionUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 
 /**
  * 主题(通配符)模式 - 生产者
@@ -19,7 +20,7 @@ public class TopicMsgProvider {
     /* 交换机名称 */
     private static final String EXCHANGE_NAME = "topic_exchange";
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, TimeoutException {
         //获取连接、创建通道
         Connection connection = ConnectionUtil.getConnection();
         Channel channel = connection.createChannel();

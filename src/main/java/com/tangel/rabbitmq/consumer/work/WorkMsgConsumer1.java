@@ -7,6 +7,7 @@ import com.rabbitmq.client.QueueingConsumer;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 
 /**
  * work模式 - 1号消费者
@@ -19,7 +20,7 @@ public class WorkMsgConsumer1 {
 
     private static final String QUEUE_NAME = "workQueue1";
 
-    private static Connection queryConnection() throws IOException {
+    private static Connection queryConnection() throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setPort(5672);
         factory.setVirtualHost("/");
@@ -29,7 +30,7 @@ public class WorkMsgConsumer1 {
         return factory.newConnection();
     }
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException, InterruptedException, TimeoutException {
         //获取连接配置
         Connection connection = queryConnection();
         Channel channel = connection.createChannel();

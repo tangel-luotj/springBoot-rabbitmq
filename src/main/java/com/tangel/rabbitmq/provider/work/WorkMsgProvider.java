@@ -6,6 +6,7 @@ import com.rabbitmq.client.ConnectionFactory;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 
 /**
  * work模式 - 消息提供者
@@ -18,7 +19,7 @@ public class WorkMsgProvider {
 
     private static final String QUEUE_NAME = "workQueue1";
 
-    private static Connection queryConnection() throws IOException {
+    private static Connection queryConnection() throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setPort(5672);
         factory.setVirtualHost("/");
@@ -28,7 +29,7 @@ public class WorkMsgProvider {
         return factory.newConnection();
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, TimeoutException {
         Connection connection = queryConnection();
         Channel channel = connection.createChannel();
 
