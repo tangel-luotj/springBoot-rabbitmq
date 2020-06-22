@@ -6,6 +6,7 @@ import com.rabbitmq.client.ConnectionFactory;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 
 /**
  * 发布订阅模式 - 生产者
@@ -19,7 +20,7 @@ public class FanoutMsgProvider {
 
     private static final String EXCHANGE_NAME = "fanout_exchange";
 
-    private static Connection queryConnection() throws IOException {
+    private static Connection queryConnection() throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setUsername("guest");
         factory.setPassword("guest");
@@ -29,7 +30,7 @@ public class FanoutMsgProvider {
         return factory.newConnection();
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, TimeoutException {
         Connection connection = queryConnection();
 
         Channel channel = connection.createChannel();

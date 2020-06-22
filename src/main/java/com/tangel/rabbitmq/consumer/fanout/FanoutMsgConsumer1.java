@@ -3,10 +3,12 @@ package com.tangel.rabbitmq.consumer.fanout;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.QueueingConsumer;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 
 /**
  * 发布订阅模式 - 消费者1
@@ -23,7 +25,7 @@ public class FanoutMsgConsumer1 {
     /* 定义交换机名称 */
     private static final String EXCHANGE_NAME = "fanout_exchange";
 
-    private static Connection queryConnection() throws IOException {
+    private static Connection queryConnection() throws IOException, TimeoutException {
         //连接配置-获取连接
         ConnectionFactory factory = new ConnectionFactory();
         factory.setPort(5672);
@@ -34,7 +36,7 @@ public class FanoutMsgConsumer1 {
         return factory.newConnection();
     }
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException, InterruptedException, TimeoutException {
         //获取连接
         Connection connection = queryConnection();
         //创建信道

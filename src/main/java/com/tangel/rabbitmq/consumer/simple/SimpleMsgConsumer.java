@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.concurrent.TimeoutException;
 
 /**
  * 简单队列 之 消费者
@@ -24,7 +25,7 @@ public class SimpleMsgConsumer {
 
     private static final String QUEUE_NAME = "simpleQueue1";
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException, InterruptedException, TimeoutException {
         //获取连接
         Connection connection = ConnectionUtil.getConnection();
         //创建信道

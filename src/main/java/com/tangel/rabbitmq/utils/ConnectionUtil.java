@@ -4,6 +4,7 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
 import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 
 /**
  * 获取连接
@@ -12,7 +13,7 @@ import java.io.IOException;
  **/
 public class ConnectionUtil {
 
-    public static Connection getConnection() throws IOException {
+    public static Connection getConnection() throws IOException, TimeoutException {
         //创建工厂
         ConnectionFactory factory = new ConnectionFactory();
         //配置账号、密码、主机、虚拟主机、端口号
