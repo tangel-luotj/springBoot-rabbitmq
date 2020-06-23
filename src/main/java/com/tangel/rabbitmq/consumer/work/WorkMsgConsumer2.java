@@ -1,6 +1,5 @@
 package com.tangel.rabbitmq.consumer.work;
 
-import com.google.common.collect.Lists;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -8,7 +7,6 @@ import com.rabbitmq.client.QueueingConsumer;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
-import java.util.LinkedList;
 import java.util.concurrent.TimeoutException;
 
 /**
