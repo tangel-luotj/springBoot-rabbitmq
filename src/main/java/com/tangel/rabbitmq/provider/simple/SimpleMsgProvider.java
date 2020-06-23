@@ -3,11 +3,9 @@ package com.tangel.rabbitmq.provider.simple;
 import com.google.common.collect.Maps;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.ConfirmListener;
 import com.rabbitmq.client.Connection;
 import com.tangel.rabbitmq.utils.ConnectionUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.jms.JmsProperties;
 
 import java.io.IOException;
 import java.util.Map;
